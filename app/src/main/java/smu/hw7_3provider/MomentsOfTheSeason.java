@@ -29,7 +29,10 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 // 선택된 계절에 찍은 이미지들 보여줄 부분
 
 public class MomentsOfTheSeason extends AppCompatActivity {
@@ -60,7 +63,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
            // dataList = GetSeasonMomentImage();
            // dataList = getDataList();
 
-            dataList = readImageInMyGallery();
+            dataList = readImageInMyGallery(3, 5);
 
 
         }else if(whatSeason.equals("summer")){
@@ -134,10 +137,12 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     // 컨텐트 프로바이더
     // https://50billion-dollars.tistory.com/entry/Android-%EC%BD%98%ED%85%90%ED%8A%B8-%ED%94%84%EB%A1%9C%EB%B0%94%EC%9D%B4%EB%8D%94
 
+    //mp3
+    // https://ddolcat.tistory.com/622
     // 미디어 db table column정보
     // https://aroundck.tistory.com/190
     // https://choidev-1.tistory.com/74 참고 주소
-    private ArrayList<Moment> readImageInMyGallery() {
+    private ArrayList<Moment> readImageInMyGallery(int minMonth, int maxMonth) {
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
         Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
@@ -145,9 +150,19 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DATE_ADDED,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.MIME_TYPE
         };
+
+
+
+       // String selection = MediaStore.Images.Media.DATE_ADDED + ">=5108213426";
+        //// 여기에서 select문 넣어서 애초에 처음부터 minMonth ~ maxMonth 사이의 월에 해당하는 것만 가져오기
+        // 이걸 했는데도 데이터 처리에 너무 많은 시간이 쓰여서 죽는다면? => 뭔가 이미지 표시도 하고 이미지에 대한 정보도
+        // 위의 칼럼에서 가져온 것들 싹다 표시해줘야 할 것 같은....
+        // 계절은 못하는...
+
         Cursor cursor = getContentResolver().query(internalUri, projection, null, null, null);
         //Cursor
         if (cursor==null|| !cursor.moveToFirst()){
@@ -185,6 +200,26 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 }
                 //String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
                 //String contentUrl = internalUri.toString() + "/" + cursor.getString(0);
+                
+                // 이미지 저장된 때를 가져옴
+                long dateAdded = cursor.getLong(1);
+                Log.d("저장된 날짜 ms : ", String.valueOf(dateAdded)); // ms 단위임
+
+                Calendar calendar = Calendar.getInstance(); //캘린더 클래스 인스턴스 만들고
+                calendar.setTimeInMillis(dateAdded); // ms단위의 저장된 날짜를 세팅하고
+                Date date = calendar.getTime(); // 포매팅 하기 위해서
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
+
+                //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
+                //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
+                // <--millisecond는 "sss"가 아니라 "SSS"로 해야 정확하게 보존된다.
+                //Date timeInDate = new Date(dateAdded);
+                String month = simpleDateFormat.format(date);
+                Log.d("저장된 월 : ", month); // 월
+
+
                 try {
                     InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
                     // bitmap 만드는 법 https://developer88.tistory.com/499
@@ -201,7 +236,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 count+=1;
-                if (count>=10){break;}
+                if (count>=30){break;}
+
             } while (cursor.moveToNext());
         }
 
