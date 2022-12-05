@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -24,10 +25,11 @@ import java.util.ArrayList;
 
 public class MomentsOfTheSeason extends AppCompatActivity {
     RecyclerView recyclerView;
+    MyRecyclerViewAdapter adapter;
     public static ArrayList<Moment> dataList;
 
     int PERMISSION_ALL = 1;
-    private String TAG = "OurTAG";
+    private String TAG = "저장 날짜들";
     String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET
@@ -43,7 +45,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         //Intent로 어떤 계절을 볼건지 가져옴
         Intent intent =getIntent();
         String whatSeason = intent.getStringExtra("whatSeason");
-        recyclerView = findViewById(R.id.recyclerView);
+
 
         // 리사이클러 뷰를 격자 모양으로 보여줌
         // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
@@ -64,6 +66,11 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            recyclerView = findViewById(R.id.recyclerView);
+            adapter = new MyRecyclerViewAdapter(this, dataList);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
         }else if(whatSeason.equals("summer")){
 
         }else if(whatSeason.equals("fall")){
@@ -144,20 +151,29 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
+                // ADDED 저장된날 / TAKEN 촬영 날짜 s단위
+                MediaStore.Images.Media._COUNT,
                 MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media.DATE_TAKEN,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.MIME_TYPE,
                 MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media._ID
+                MediaStore.Images.Media._ID,
+                String.valueOf(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         };
         String selection = MediaStore.Images.Media.MIME_TYPE + "='image/jpeg'";
         Cursor cursor = getApplicationContext().getContentResolver().query(uri, projection, selection, null, MediaStore.Images.Media.DATE_ADDED);
         int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        int columnUri = cursor.getColumnIndexOrThrow(String.valueOf(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
+        int columnDateAdded = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
 
         while (cursor.moveToNext()) {
             String absolutePath = cursor.getString(columnIndex);
+            int imagePath = cursor.getInt(columnUri);
+            Log.d(TAG, String.valueOf(columnDateAdded));
             Moment pData = new Moment();
             pData.setPath(absolutePath);
+            pData.setImage_path(imagePath);
             pDataList.add(pData);
 
         }
