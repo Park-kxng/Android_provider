@@ -38,4 +38,21 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         }
 
     }
+
+    ///
+    /*
+    // 안드로이드 Developers 문서 링크 : https://developer.android.com/reference/android/provider/MediaStore.MediaColumns
+   MediaStore.Images.Media.EXTERNAL_CONTENT_URI : uri
+    MediaStore.Images.Media.MIME_TYPE : 미디어 항목의 MIME 유형
+    MediaStore.Images.Media.ALBUM: 앨범 이름
+    MediaStore.Images.Media._ID
+MediaStore.Images.Media.DATA :디스크의 미디어 항목에 대한 절대 파일 시스템 경로
+MediaStore.Images.Media.DISPLAY_NAME : 미디어 항목의 표시 이름
+MediaStore.Images.Media.TITLE :MediaMetadataRetriever#METADATA_KEY_TITLE 이 미디어 항목에서 추출 된 인덱싱된 값
+MediaStore.Images.Media.DATE_TAKEN
+: 이 미디어 항목 의 인덱싱된 값 MediaMetadataRetriever#METADATA_KEY_DATE
+또는 ExifInterface#TAG_DATETIME_ORIGINAL추출된 값
+
+MediaStore.Images.Media.DATE_ADDED : 미디어 항목이 처음 추가된 시간
+    * */
 }
