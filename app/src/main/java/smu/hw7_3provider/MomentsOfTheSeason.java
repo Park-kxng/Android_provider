@@ -29,12 +29,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     MyRecyclerViewAdapter adapter;
     public static ArrayList<Moment> dataList;
 
-    int PERMISSION_ALL = 1;
+
     private String TAG = "저장 날짜들";
-    String[] PERMISSIONS = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.INTERNET
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +51,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         if (whatSeason.equals("spring")){
             // 봄을 선택했을 때
 
-            dataList = GetSeasonMomentImage();
+           // dataList = GetSeasonMomentImage();
 
 
         }else if(whatSeason.equals("summer")){
@@ -83,41 +80,47 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
 
-
+/*
     // 우리 갤러리에서 필요한 것들 칼럼 통해서 가져오기
     public ArrayList<Moment> GetSeasonMomentImage() {
         ArrayList<Moment> pDataList = new ArrayList<>();
 
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        // 우리가 원하는 데이터 셋을 project에 만들어서 넣어줌
         String[] projection = new String[]{
                 // ADDED 저장된날 / TAKEN 촬영 날짜 s단위
 
                 MediaStore.Images.Media.DATE_ADDED,
-                MediaStore.Images.Media.DATE_TAKEN,
-                MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.MIME_TYPE,
+               // MediaStore.Images.Media.DATE_TAKEN,
+              //  MediaStore.Images.Media.DISPLAY_NAME,
+               // MediaStore.Images.Media.MIME_TYPE,
                 MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media._ID,
-                String.valueOf(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+              //  MediaStore.Images.Media._ID
+
         };
-        String selection = MediaStore.Images.Media.MIME_TYPE + "='image/jpeg'";
-        Cursor cursor = getApplicationContext().getContentResolver().query(uri, projection, selection, null, MediaStore.Images.Media.DATE_ADDED);
+        //String selection = MediaStore.Images.Media.MIME_TYPE + "='image/jpeg'";
+        // uri를 가져올거임 위의 데이터셋에 해당하는 것들에서 추가된 순서로
+        Cursor cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, MediaStore.Images.Media.DATE_ADDED);
+
+
         int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         int columnUri = cursor.getColumnIndexOrThrow(String.valueOf(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
         int columnDateAdded = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
 
-        while (cursor.moveToNext()) {
+        cursor.moveToFirst(); // 처음으로 이동
+        do {
             String absolutePath = cursor.getString(columnIndex);
-            String imagePath = cursor.getString(columnUri);
+            int imagePath = Integer.parseInt(cursor.getString(columnUri));
             Log.d(TAG, String.valueOf(columnDateAdded));
             Moment pData = new Moment();
             pData.setPath(absolutePath);
             pData.setImage_path(imagePath);
             pDataList.add(pData);
-
         }
+        while (cursor.moveToNext());
+
         return pDataList;
     }
 
-
+*/
 }

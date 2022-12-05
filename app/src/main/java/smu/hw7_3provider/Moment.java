@@ -7,13 +7,13 @@ public class Moment {
     // 필요 없을 수도 있음
     // 일단 이미지 경로 저장하는 부분
     String path;
-    String image_path;
+    int image_path;
 
-    public String getImage_path() {
+    public int getImage_path() {
         return this.image_path;
     }
 
-    public void setImage_path(String image_path) {
+    public void setImage_path(int image_path) {
         this.image_path = image_path;
     }
 
