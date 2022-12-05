@@ -117,16 +117,20 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         return mdataList;
     }
+    
+    // https://choidev-1.tistory.com/74 참고 주소
     private ArrayList<Moment> readImageInMyGallery() {
         ArrayList<Moment> mdataList = new ArrayList<>();
-        Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        //Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
+        Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; // sd카드 없는 근영이를 위한 internal
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.MIME_TYPE
         };
 
-        Cursor cursor = getContentResolver().query(externalUri, projection, null, null, null);
+        //Cursor cursor = getContentResolver().query(externalUri, projection, null, null, null);
+        Cursor cursor = getContentResolver().query(internalUri, projection, null, null, null);
 
         if (cursor == null || !cursor.moveToFirst()) {
             Log.e("TAG", "cursor null or cursor is empty");
@@ -135,7 +139,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         int count = 0;
         do {
 
-            String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
+            //String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
+            String contentUrl = internalUri.toString() + "/" + cursor.getString(0);
 
             try {
                 InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
