@@ -7,6 +7,34 @@ public class Moment {
     // 필요 없을 수도 있음
     // 일단 이미지 경로 저장하는 부분
     String path;
+    int dataAdded;
+    long data_id;
+    String data;
+
+    public long getData_id() {
+        return data_id;
+    }
+
+    public void setData_id(long data_id) {
+        this.data_id = data_id;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public int getDataAdded() {
+        return dataAdded;
+    }
+
+    public void setDataAdded(int dataAdded) {
+        this.dataAdded = dataAdded;
+    }
+
     int image_path;
 
     public int getImage_path() {

@@ -37,7 +37,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments_of_the_season);
 
-
+        Log.d("봄 선택됨", "0000000000000000000000000000");
         //Intent로 어떤 계절을 볼건지 가져옴
         Intent intent =getIntent();
         String whatSeason = intent.getStringExtra("whatSeason");
@@ -50,8 +50,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         // 앞에서 어떤 버튼을 눌렀는지에 따라서 선택된 계절을 보여줌
         if (whatSeason.equals("spring")){
             // 봄을 선택했을 때
-
+            Log.d("봄 선택됨", "0000000000000000000000000000");
            // dataList = GetSeasonMomentImage();
+            dataList = getDataList();
 
 
         }else if(whatSeason.equals("summer")){
@@ -76,9 +77,39 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 MediaStore.Images.Media._ID
     * */
 
+    public ArrayList<Moment> getDataList() {
+        ArrayList<Moment> mdataList = new ArrayList<>();
+        String[] imageSet = new String[]{
 
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media._ID
+        };
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+            return null;
+        }
+        Cursor cursor = getApplicationContext().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+                imageSet, null, null, null);
+        cursor.moveToFirst();
+        while (cursor.moveToNext()){
+            Moment moment = new Moment();
+            int dataAdded = cursor.getInt(0); //DATA_ADDED
+            moment.setDataAdded(dataAdded);
+            Log.d("이건 dataAdded", String.valueOf(dataAdded));
+            String data = cursor.getString(1); //DATA
+            moment.setData(data);
+            Log.d("이건 data", String.valueOf(data));
+            long data_id = cursor.getLong(2); // _ID
+            moment.setData_id(data_id);
+            Log.d("이건 data_id", String.valueOf(data_id));
+            mdataList.add(moment);
+        }
 
+        cursor.close();
+
+        return mdataList;
+    }
 
 /*
     // 우리 갤러리에서 필요한 것들 칼럼 통해서 가져오기
