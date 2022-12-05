@@ -1,5 +1,6 @@
 package smu.hw7_3provider;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 public class Moment {
@@ -10,6 +11,15 @@ public class Moment {
     int dataAdded;
     long data_id;
     String data;
+    Bitmap bitmapImage;
+
+    public Bitmap getBitmapImage() {
+        return bitmapImage;
+    }
+
+    public void setBitmapImage(Bitmap bitmapImage) {
+        this.bitmapImage = bitmapImage;
+    }
 
     public long getData_id() {
         return data_id;

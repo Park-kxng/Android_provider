@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +23,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 // 선택된 계절에 찍은 이미지들 보여줄 부분
 
@@ -52,7 +57,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             // 봄을 선택했을 때
             Log.d("봄 선택됨", "0000000000000000000000000000");
            // dataList = GetSeasonMomentImage();
-            dataList = getDataList();
+           // dataList = getDataList();
+
+            dataList = readImageInMyGallery();
 
 
         }else if(whatSeason.equals("summer")){
@@ -110,7 +117,44 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         return mdataList;
     }
+    private ArrayList<Moment> readImageInMyGallery() {
+        ArrayList<Moment> mdataList = new ArrayList<>();
+        Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = new String[]{
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.MIME_TYPE
+        };
 
+        Cursor cursor = getContentResolver().query(externalUri, projection, null, null, null);
+
+        if (cursor == null || !cursor.moveToFirst()) {
+            Log.e("TAG", "cursor null or cursor is empty");
+            return null;
+        }
+
+        do {
+            String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
+
+            try {
+                InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+
+                if(is != null){
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    Moment moment = new Moment();
+                    moment.setBitmapImage(bitmap);
+                    mdataList.add(moment);
+                    is.close();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } while (cursor.moveToNext());
+        return mdataList;
+    }
 /*
     // 우리 갤러리에서 필요한 것들 칼럼 통해서 가져오기
     public ArrayList<Moment> GetSeasonMomentImage() {
