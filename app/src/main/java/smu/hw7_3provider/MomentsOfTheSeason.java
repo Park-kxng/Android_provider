@@ -134,6 +134,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     // 컨텐트 프로바이더
     // https://50billion-dollars.tistory.com/entry/Android-%EC%BD%98%ED%85%90%ED%8A%B8-%ED%94%84%EB%A1%9C%EB%B0%94%EC%9D%B4%EB%8D%94
 
+    // 미디어 db table column정보
+    // https://aroundck.tistory.com/190
     // https://choidev-1.tistory.com/74 참고 주소
     private ArrayList<Moment> readImageInMyGallery() {
         ArrayList<Moment> mdataList = new ArrayList<>();
@@ -159,8 +161,15 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             // 이랬는데도 없으면 기본 이미지
             Log.e("TAG", "cursor null or cursor is empty");
             // 내장, 외부 메모리에 이미지 없으면 기본 이미지 띄워줌
-            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fall);
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
+
+            // 비트맵 byte 사이즈 줄이기 방법 : https://it77.tistory.com/99
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 4;
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fall, options);
+            // 화면에 맞게 resized하는 것도 있으나 일단 /4로 조절
+            // http://egloos.zum.com/pavecho/v/7210478
+            //Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 440, 320, true);
             Moment moment = new Moment();
             moment.setBitmapImage(resizedBitmap);
             mdataList.add(moment);
