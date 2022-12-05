@@ -91,7 +91,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter {
         });
 
          */
-        myViewHolder.imageViewMoment.setImageResource((int) dataModels.get(position).getData_id());
+        myViewHolder.imageViewMoment.setImageBitmap(dataModels.get(position).getBitmapImage());
     }
 
 

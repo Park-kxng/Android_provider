@@ -132,8 +132,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             Log.e("TAG", "cursor null or cursor is empty");
             return null;
         }
-
+        int count = 0;
         do {
+
             String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
 
             try {
@@ -151,7 +152,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            count+=1;
+            if (count>=10){break;}
         } while (cursor.moveToNext());
         return mdataList;
     }
