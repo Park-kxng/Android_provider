@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -117,49 +119,76 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         return mdataList;
     }
-    
+    // 내부저장소 vs 외부 저장소
+    // https://hellose7.tistory.com/96
+    // 정신건강에 좋은 파일 공유하기
+    //https://crystalcube.co.kr/category/Android
+    // 외부 저장소에서 mp3 가져와 재생
+    // https://developer88.tistory.com/192
+    // 컨텐트 프로바이더
+    // https://50billion-dollars.tistory.com/entry/Android-%EC%BD%98%ED%85%90%ED%8A%B8-%ED%94%84%EB%A1%9C%EB%B0%94%EC%9D%B4%EB%8D%94
+
     // https://choidev-1.tistory.com/74 참고 주소
     private ArrayList<Moment> readImageInMyGallery() {
         ArrayList<Moment> mdataList = new ArrayList<>();
-        //Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
+        boolean externalFlag = false;
+        Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
         Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; // sd카드 없는 근영이를 위한 internal
+
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.MIME_TYPE
         };
-
-        //Cursor cursor = getContentResolver().query(externalUri, projection, null, null, null);
         Cursor cursor = getContentResolver().query(internalUri, projection, null, null, null);
+        //Cursor
+        if (cursor==null|| !cursor.moveToFirst()){
+            // 인터널이 널이면 외부로 바꿔주기
+            cursor = getContentResolver().query(externalUri, projection, null, null, null);
+            externalFlag = true;
+        }
+
 
         if (cursor == null || !cursor.moveToFirst()) {
+            // 이랬는데도 없으면 기본 이미지
             Log.e("TAG", "cursor null or cursor is empty");
-            return null;
-        }
-        int count = 0;
-        do {
-
-            //String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
-            String contentUrl = internalUri.toString() + "/" + cursor.getString(0);
-
-            try {
-                InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
-
-                if(is != null){
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    Moment moment = new Moment();
-                    moment.setBitmapImage(bitmap);
-                    mdataList.add(moment);
-                    is.close();
+            // 내장, 외부 메모리에 이미지 없으면 기본 이미지 띄워줌
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fall);
+            Moment moment = new Moment();
+            moment.setBitmapImage(bitmap);
+            mdataList.add(moment);
+            return mdataList; // 여기에 비어있을 때 표시하는거 넣기
+        }else{
+            int count = 0;
+            do {
+                String contentUrl;
+                if (externalFlag){
+                    contentUrl = externalUri.toString() + "/" + cursor.getString(0);
+                }else{
+                    contentUrl = internalUri.toString() + "/" + cursor.getString(0);
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            count+=1;
-            if (count>=10){break;}
-        } while (cursor.moveToNext());
+                //String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
+                //String contentUrl = internalUri.toString() + "/" + cursor.getString(0);
+                try {
+                    InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+                    // bitmap 만드는 법 https://developer88.tistory.com/499
+                    if(is != null){
+                        Bitmap bitmap = BitmapFactory.decodeStream(is);
+                        Moment moment = new Moment();
+                        moment.setBitmapImage(bitmap);
+                        mdataList.add(moment);
+                        is.close();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                count+=1;
+                if (count>=10){break;}
+            } while (cursor.moveToNext());
+        }
+
         return mdataList;
     }
 /*
