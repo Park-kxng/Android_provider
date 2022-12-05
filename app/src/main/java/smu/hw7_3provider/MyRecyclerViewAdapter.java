@@ -91,7 +91,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter {
         });
 
          */
-        myViewHolder.imageViewMoment.setImageResource(dataModels.get(position).getImage_path());
+        myViewHolder.imageViewMoment.setImageResource(Integer.parseInt(dataModels.get(position).getImage_path()));
     }
 
 

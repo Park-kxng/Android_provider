@@ -3,6 +3,7 @@ package smu.hw7_3provider;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +38,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_moments_of_the_season);
+
 
         //Intent로 어떤 계절을 볼건지 가져옴
         Intent intent =getIntent();
@@ -49,27 +48,14 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         // 리사이클러 뷰를 격자 모양으로 보여줌
         // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        //GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
 
         // 앞에서 어떤 버튼을 눌렀는지에 따라서 선택된 계절을 보여줌
         if (whatSeason.equals("spring")){
             // 봄을 선택했을 때
-            if (!hasPermissions(this, PERMISSIONS)) {
-                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-            }
 
-            //백스레드 실행시켜 이미지 로드
-            BackThread backThread = new BackThread(handler);
-            backThread.start();
-            try {
-                backThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            recyclerView = findViewById(R.id.recyclerView);
-            adapter = new MyRecyclerViewAdapter(this, dataList);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            dataList = GetSeasonMomentImage();
+
 
         }else if(whatSeason.equals("summer")){
 
@@ -78,6 +64,10 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         }else if(whatSeason.equals("winter")){
 
         }
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new MyRecyclerViewAdapter(this, dataList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
     }
     ///아놔
@@ -93,66 +83,15 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
 
-    private void getPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.INTERNET
-        }, 10);
-    }
 
-    public boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(@NonNull Message msg) {
-            if (msg.what == 11) {
-                System.out.println("Thread 전달");
-                //메인스레드에서 데이터 크기 확인. 전달 성공했는지 확인하기 위함.
-                System.out.println("Size of photo data list in MainThread: " + dataList.size());
-            }
-            return true;
-        }
-    });
-
-
-
-    // 저장소 권한 확인 함수
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0) {
-            for (int grantResult : grantResults) {
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                } else {
-                    Toast.makeText(getApplicationContext(), "앱 권한 설정이 필요합니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // 잘 되고 있나 찍어보기
-            Log.d(TAG, "Permission: " + permissions[0] + "was" + grantResults[0]);
-        } else {
-            Log.d(TAG, "Permission denied");
-        }
-    }
-
-    //갤러리 동기화
-    public ArrayList<Moment> ImageReady() {
+    // 우리 갤러리에서 필요한 것들 칼럼 통해서 가져오기
+    public ArrayList<Moment> GetSeasonMomentImage() {
         ArrayList<Moment> pDataList = new ArrayList<>();
 
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
                 // ADDED 저장된날 / TAKEN 촬영 날짜 s단위
-                MediaStore.Images.Media._COUNT,
+
                 MediaStore.Images.Media.DATE_ADDED,
                 MediaStore.Images.Media.DATE_TAKEN,
                 MediaStore.Images.Media.DISPLAY_NAME,
@@ -169,7 +108,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             String absolutePath = cursor.getString(columnIndex);
-            int imagePath = cursor.getInt(columnUri);
+            String imagePath = cursor.getString(columnUri);
             Log.d(TAG, String.valueOf(columnDateAdded));
             Moment pData = new Moment();
             pData.setPath(absolutePath);
@@ -180,25 +119,5 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         return pDataList;
     }
 
-    //백스레드에서 갤러리 동기화 실행
-    class BackThread extends Thread {
-        private Handler handler;
 
-        BackThread(Handler handler) {
-            this.handler = handler;
-        }
-
-        ArrayList<Moment> pDataBackList = new ArrayList<>();
-
-        @Override
-        public void run() {
-            pDataBackList = ImageReady();
-
-            //백스레드에서 데이터의 크기 확인
-            System.out.println("Size of photo data list in BackThread: " + pDataBackList.size());
-
-            MomentsOfTheSeason.dataList = pDataBackList;
-            handler.sendEmptyMessage(11);
-        }
-    }
 }
