@@ -8,14 +8,34 @@
     android:orientation="vertical"
     tools:context=".MomentsOfTheSeason">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="286dp"
-        android:layout_height="132dp"
-        app:srcCompat="@drawable/spring" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#41B35C"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="78dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/spring" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:fontFamily="@font/cafe24bold"
+            android:text="봄날의 순간들"
+            android:textSize="34sp" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/white" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

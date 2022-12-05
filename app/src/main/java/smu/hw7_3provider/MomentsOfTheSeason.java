@@ -141,7 +141,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
         Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
-        Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; // sd카드 없는 근영이를 위한 internal
+        Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; // sd카드 없는 근영이를 위한 internal --NOPE..
 
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
