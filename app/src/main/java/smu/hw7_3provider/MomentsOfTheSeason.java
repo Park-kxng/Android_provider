@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -50,9 +51,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         String whatSeason = intent.getStringExtra("whatSeason");
 
 
-        // 리사이클러 뷰를 격자 모양으로 보여줌
-        // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
-        //GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+
 
         // 앞에서 어떤 버튼을 눌렀는지에 따라서 선택된 계절을 보여줌
         if (whatSeason.equals("spring")){
@@ -74,7 +73,14 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new MyRecyclerViewAdapter(this, dataList);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        // 리사이클러 뷰를 격자 모양으로 보여줌
+        // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
+        //불규칙 레이아웃
+        StaggeredGridLayoutManager staggeredGridLayoutManager
+                = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        //레이아웃 매니저 연결
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
     }
     ///아놔
@@ -154,8 +160,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             Log.e("TAG", "cursor null or cursor is empty");
             // 내장, 외부 메모리에 이미지 없으면 기본 이미지 띄워줌
             Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fall);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/4, bitmap.getHeight()/4, true);
             Moment moment = new Moment();
-            moment.setBitmapImage(bitmap);
+            moment.setBitmapImage(resizedBitmap);
             mdataList.add(moment);
             return mdataList; // 여기에 비어있을 때 표시하는거 넣기
         }else{
