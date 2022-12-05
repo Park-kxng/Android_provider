@@ -4,57 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF2C9"
+    android:background="#D5D5D5"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textViewMainTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/cafe24bold"
-        android:text="2022년 갤러리 연말 정산"
-        android:textColor="@color/black"
-        android:textSize="15pt"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textViewSubTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/cafe24light"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:background="@drawable/img"
         android:gravity="center"
-        android:text="당신의 2022년을 \n 사진으로 정리해보세요"
-        android:textColor="@color/black"
-        android:textSize="10pt"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonSelectSeason"
-        android:layout_width="193dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/button_design"
-        android:fontFamily="@font/cafe24bold"
-        android:text="계절 선택하기"
-        android:textColor="@color/purple_200"
-        android:textSize="10pt"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewMainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24bold"
+            android:text="2022년 갤러리 연말 정산"
+            android:textColor="#232323"
+            android:textSize="15pt"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textViewTeamInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/cafe24light"
-        android:gravity="center"
-        android:text="3조\n201240 정유진\n2013075 박근영"
-        android:textColor="@color/black"
-        android:textSize="10pt"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/cafe24light"
+            android:gravity="center"
+            android:text="당신의 2022년을\n사진으로 정리해보세요"
+            android:textColor="#3C3C3C"
+            android:textSize="10pt"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/buttonSelectSeason"
+            android:layout_width="193dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_design"
+            android:fontFamily="@font/cafe24bold"
+            android:text="계절 선택하기"
+            android:textColor="#FF73A2"
+            android:textSize="10pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewTeamInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/cafe24light"
+            android:gravity="center"
+            android:text="3조\n2012140 정유진\n2013075 박근영"
+            android:textColor="#303030"
+            android:textSize="10pt"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>
