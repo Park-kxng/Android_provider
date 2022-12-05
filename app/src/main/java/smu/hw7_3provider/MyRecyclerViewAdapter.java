@@ -92,6 +92,17 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter {
 
          */
         myViewHolder.imageViewMoment.setImageBitmap(dataModels.get(position).getBitmapImage());
+        // ▼ 리사이클러 내의 아이템 클릭시 동작하는 부분
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context, position+"번째 아이템 클릭", Toast.LENGTH_SHORT).show();
+                // 인텐트로 넘겨줘야 하는 부분
+                Intent intent = new Intent(myViewHolder.itemView.getContext(), BeautifulMoment.class);
+                intent.putExtra("clickPosition", position); // position으로 array접근해서 보여주기
+                ContextCompat.startActivity(myViewHolder.itemView.getContext(), intent, null);
+            }
+        });
     }
 
 
