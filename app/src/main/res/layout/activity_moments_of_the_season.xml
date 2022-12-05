@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        android:layout_width="286dp"
+        android:layout_height="132dp"
+        app:srcCompat="@drawable/spring" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF2C9"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,6 +15,7 @@
         android:layout_marginTop="152dp"
         android:layout_marginEnd="186dp"
         android:layout_marginBottom="560dp"
+        android:fontFamily="@font/cafe24bold"
         android:text="2022년 갤러리 연말 정산"
         android:textColor="@color/black"
         android:textSize="15pt"
