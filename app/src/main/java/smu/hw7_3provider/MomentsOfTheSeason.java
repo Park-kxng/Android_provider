@@ -15,7 +15,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments_of_the_season);
-        // 어떤 계절을 볼건지 가져옴
+
+        //Intent로 어떤 계절을 볼건지 가져옴
         Intent intent =getIntent();
         String whatSeason = intent.getStringExtra("whatSeason");
         recyclerView = findViewById(R.id.recyclerView);
