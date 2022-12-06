@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 // 선택된 계절에 찍은 이미지들 보여줄 부분
 
 public class MomentsOfTheSeason extends AppCompatActivity {
@@ -139,12 +140,16 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
 
+
         // String selection = MediaStore.Images.Media.DATE_ADDED + ">=5108213426";
         //// 여기에서 select문 넣어서 애초에 처음부터 minMonth ~ maxMonth 사이의 월에 해당하는 것만 가져오기
         // 이걸 했는데도 데이터 처리에 너무 많은 시간이 쓰여서 죽는다면? => 뭔가 이미지 표시도 하고 이미지에 대한 정보도
         // 위의 칼럼에서 가져온 것들 싹다 표시해줘야 할 것 같은....
         // 계절은 못하는...
-        final String orderBy = MediaStore.Images.Media.DATE_ADDED +" DESC";
+        //final String orderBy = MediaStore.Images.Media.DATE_ADDED +" DESC";
+        // https://hello-bryan.tistory.com/219
+        // modified로 최종 수정날짜 알 수 있음
+        final String orderBy = MediaStore.Images.Media.DATE_MODIFIED +" DESC";
 
         Cursor cursor = getContentResolver().query(internalUri, projection, null, null, orderBy);
         //Cursor
@@ -175,6 +180,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             return mdataList; // 여기에 비어있을 때 표시하는거 넣기
         }else{
             int count = 0;
+            int cursor_count = cursor.getCount();
+            Log.d("개수 ----------", String.valueOf(cursor_count));
             do {
 
                 String contentUrl;
@@ -190,6 +197,12 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 // 우리가 원하는 날짜를 뽑아 오기 위해서는 인덱스 3을 넣어야 함.
                 // * DATA ADDED (ms) 값
                 Long value_3 = cursor.getLong(3);
+               Log.d("ms시간 - modified: ", String.valueOf(value_3));
+               // 시간 결정 가능
+               if (value_3 <=20221101){
+                   //5월만 출력하고 나머지 넘김
+                   continue;
+               }
                 //Log.d("저장된 날짜 ms : ", String.valueOf(value_3)); // ms 단위임
                 // ms 단위 변환
                 Calendar calendar = Calendar.getInstance(); //캘린더 클래스 인스턴스 만들고
@@ -233,7 +246,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 }
                 count+=1;
                 Log.d("count : " ,String.valueOf(count));
-                if (count>=30){break;}
+                if (count>=10){break;}
 
             } while (cursor.moveToNext());
         }
