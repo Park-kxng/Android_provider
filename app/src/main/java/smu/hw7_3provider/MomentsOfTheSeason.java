@@ -107,8 +107,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
             return null;
         }
+        final String orderBy = MediaStore.Images.Media.DATE_ADDED;
         Cursor cursor = getApplicationContext().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-                imageSet, null, null, null);
+                imageSet, null, null, orderBy +"ASC");
         cursor.moveToFirst();
         while (cursor.moveToNext()){
             Moment moment = new Moment();
@@ -150,6 +151,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DATE_TAKEN,
                 MediaStore.Images.Media.DATE_ADDED,
                 MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.MIME_TYPE
@@ -200,24 +202,34 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 }
                 //String contentUrl = externalUri.toString() + "/" + cursor.getString(0);
                 //String contentUrl = internalUri.toString() + "/" + cursor.getString(0);
-                
+
                 // 이미지 저장된 때를 가져옴
-                long dateAdded = cursor.getLong(1);
-                Log.d("저장된 날짜 ms : ", String.valueOf(dateAdded)); // ms 단위임
+                // 우리가 원하는 날짜를 뽑아 오기 위해서는 인덱스 3을 넣어야 함.
+                // * DATA ADDED (ms) 값
+                Long value_3 = cursor.getLong(3);
+
+
+
+
+                Log.d("저장된 날짜 ms : ", String.valueOf(value_3)); // ms 단위임
 
                 Calendar calendar = Calendar.getInstance(); //캘린더 클래스 인스턴스 만들고
-                calendar.setTimeInMillis(dateAdded); // ms단위의 저장된 날짜를 세팅하고
+                calendar.setTimeInMillis(value_3); // ms단위의 저장된 날짜를 세팅하고
                 Date date = calendar.getTime(); // 포매팅 하기 위해서
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                 //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
 
                 //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
                 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
                 // <--millisecond는 "sss"가 아니라 "SSS"로 해야 정확하게 보존된다.
                 //Date timeInDate = new Date(dateAdded);
-                String month = simpleDateFormat.format(date);
-                Log.d("저장된 월 : ", month); // 월
+                String yearNmonth = simpleDateFormat.format(date);
+                Log.d("저장된 월 : ", yearNmonth); // 월
+
+
+
+
 
 
                 try {
