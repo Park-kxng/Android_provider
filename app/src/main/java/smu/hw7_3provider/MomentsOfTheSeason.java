@@ -1,5 +1,6 @@
 package smu.hw7_3provider;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -63,7 +65,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             // 화면 스타일 변경
             title.setText("봄날의 순간들");
             icon.setImageResource(R.drawable.resize_spring);
-            layout.setBackgroundColor(R.color.spring);
+            layout.setBackgroundColor(Color.rgb(71, 183, 73));
 
             Log.d("봄 선택됨", "0000000000000000000000000000");
            // dataList = GetSeasonMomentImage();
@@ -76,19 +78,19 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             // 화면 스타일 변경
             title.setText("여름날의 순간들");
             icon.setImageResource(R.drawable.resize_summer);
-            layout.setBackgroundColor(R.color.summer);
+            layout.setBackgroundColor(Color.rgb(255, 210, 5));
 
         }else if(whatSeason.equals("fall")){
             // 화면 스타일 변경
             title.setText("가을의 순간들");
             icon.setImageResource(R.drawable.resize_fall);
-            layout.setBackgroundColor(R.color.fall);
+            layout.setBackgroundColor(Color.rgb(241, 116, 34));
 
         }else if(whatSeason.equals("winter")){
             // 화면 스타일 변경
             title.setText("겨울의 순간들");
             icon.setImageResource(R.drawable.resize_winter);
-            layout.setBackgroundColor(R.color.winter);
+            layout.setBackgroundColor(Color.rgb(45, 170, 226));
 
         }
         recyclerView = findViewById(R.id.recyclerView);
