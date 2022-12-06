@@ -30,5 +30,32 @@ public class SelectSeason extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        buttonSummer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MomentsOfTheSeason.class);
+                // 여름이라는 것을 넘겨주기
+                intent.putExtra("whatSeason", "summer");
+                startActivity(intent);
+            }
+        });
+        buttonFall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MomentsOfTheSeason.class);
+                // 가을이라는 것을 넘겨주기
+                intent.putExtra("whatSeason", "fall");
+                startActivity(intent);
+            }
+        });
+        buttonWinter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MomentsOfTheSeason.class);
+                // 겨울이라는 것을 넘겨주기
+                intent.putExtra("whatSeason", "winter");
+                startActivity(intent);
+            }
+        });
     }
 }

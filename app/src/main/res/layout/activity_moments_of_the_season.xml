@@ -9,6 +9,7 @@
     tools:context=".MomentsOfTheSeason">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#41B35C"
@@ -16,13 +17,13 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/seasonIcon"
             android:layout_width="78dp"
             android:layout_height="100dp"
             app:srcCompat="@drawable/spring" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/momentsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"

@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="spring">#47B749</color>
+    <color name="summer">#FFD205</color>
+    <color name="fall">#F17422</color>
+    <color name="winter">#2DAAE2</color>
+
 </resources>

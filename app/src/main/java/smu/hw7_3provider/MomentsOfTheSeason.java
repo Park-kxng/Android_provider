@@ -1,30 +1,24 @@
 package smu.hw7_3provider;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,14 +33,21 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     RecyclerView recyclerView;
     MyRecyclerViewAdapter adapter;
     public static ArrayList<Moment> dataList;
+    TextView title;
+    ImageView icon;
+    LinearLayout layout;
 
 
     private String TAG = "저장 날짜들";
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments_of_the_season);
+        title = findViewById(R.id.momentsTitle);
+        icon = findViewById(R.id.seasonIcon);
+        layout = findViewById(R.id.layout);
 
         Log.d("봄 선택됨", "0000000000000000000000000000");
         //Intent로 어떤 계절을 볼건지 가져옴
@@ -59,6 +60,11 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         // 앞에서 어떤 버튼을 눌렀는지에 따라서 선택된 계절을 보여줌
         if (whatSeason.equals("spring")){
             // 봄을 선택했을 때
+            // 화면 스타일 변경
+            title.setText("봄날의 순간들");
+            icon.setImageResource(R.drawable.resize_spring);
+            layout.setBackgroundColor(R.color.spring);
+
             Log.d("봄 선택됨", "0000000000000000000000000000");
            // dataList = GetSeasonMomentImage();
            // dataList = getDataList();
@@ -67,10 +73,22 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
         }else if(whatSeason.equals("summer")){
+            // 화면 스타일 변경
+            title.setText("여름날의 순간들");
+            icon.setImageResource(R.drawable.resize_summer);
+            layout.setBackgroundColor(R.color.summer);
 
         }else if(whatSeason.equals("fall")){
+            // 화면 스타일 변경
+            title.setText("가을의 순간들");
+            icon.setImageResource(R.drawable.resize_fall);
+            layout.setBackgroundColor(R.color.fall);
 
         }else if(whatSeason.equals("winter")){
+            // 화면 스타일 변경
+            title.setText("겨울의 순간들");
+            icon.setImageResource(R.drawable.resize_winter);
+            layout.setBackgroundColor(R.color.winter);
 
         }
         recyclerView = findViewById(R.id.recyclerView);

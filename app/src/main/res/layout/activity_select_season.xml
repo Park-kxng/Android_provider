@@ -15,15 +15,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/buttonSpring"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:id="@+id/buttonSpring"
             android:layout_weight="1"
-            android:background="#41B35C"
+            android:background="#47B749"
+            android:drawableTop="@drawable/resize_spring"
             android:fontFamily="@font/cafe24bold"
+            android:paddingTop="70dp"
+            android:paddingBottom="110dp"
             android:text="봄"
-            android:textColor="#00854B"
+            android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold" />
 
@@ -32,10 +34,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FEF2A0"
+            android:background="#FFD205"
+            android:drawableTop="@drawable/resize_summer"
             android:fontFamily="@font/cafe24bold"
+            android:paddingTop="70dp"
+            android:paddingBottom="110dp"
             android:text="여름"
-            android:textColor="#F3A305"
+            android:textColor="@color/white"
+
             android:textSize="48sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -51,10 +57,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FE9331"
+            android:background="#F17422"
+            android:drawableTop="@drawable/resize_fall"
             android:fontFamily="@font/cafe24bold"
+            android:paddingLeft="20dp"
+            android:paddingTop="70dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="110dp"
             android:text="가을"
-            android:textColor="#BF3F03"
+            android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold" />
 
@@ -63,10 +74,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#90CAF0"
+            android:background="#2DAAE2"
+            android:drawableTop="@drawable/resize_winter"
             android:fontFamily="@font/cafe24bold"
+            android:paddingLeft="20dp"
+            android:paddingTop="70dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="110dp"
             android:text="겨울"
-            android:textColor="#0059B8"
+            android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="bold" />
     </LinearLayout>
