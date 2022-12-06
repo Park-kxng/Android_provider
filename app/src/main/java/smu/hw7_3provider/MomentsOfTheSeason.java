@@ -60,6 +60,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
         // 앞에서 어떤 버튼을 눌렀는지에 따라서 선택된 계절을 보여줌
+        // 화면 스타일 변경
         if (whatSeason.equals("spring")){
             // 봄을 선택했을 때
             // 화면 스타일 변경
@@ -129,7 +130,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         }
         final String orderBy = MediaStore.Images.Media.DATE_ADDED;
         Cursor cursor = getApplicationContext().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-                imageSet, null, null, orderBy +"ASC");
+                imageSet, null, null, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()){
             Moment moment = new Moment();
@@ -184,12 +185,14 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         // 이걸 했는데도 데이터 처리에 너무 많은 시간이 쓰여서 죽는다면? => 뭔가 이미지 표시도 하고 이미지에 대한 정보도
         // 위의 칼럼에서 가져온 것들 싹다 표시해줘야 할 것 같은....
         // 계절은 못하는...
+        final String orderBy = MediaStore.Images.Media.DATE_ADDED +" DESC ";
 
-        Cursor cursor = getContentResolver().query(internalUri, projection, null, null, null);
+        Cursor cursor = getContentResolver().query(internalUri, projection, null, null, orderBy);
         //Cursor
+        cursor.moveToLast();
         if (cursor==null|| !cursor.moveToFirst()){
             // 인터널이 널이면 외부로 바꿔주기
-            cursor = getContentResolver().query(externalUri, projection, null, null, null);
+            cursor = getContentResolver().query(externalUri, projection, null, null, orderBy);
             externalFlag = true;
         }
 
@@ -214,6 +217,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         }else{
             int count = 0;
             do {
+
                 String contentUrl;
                 if (externalFlag){
                     contentUrl = externalUri.toString() + "/" + cursor.getString(0);
@@ -227,16 +231,15 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 // 우리가 원하는 날짜를 뽑아 오기 위해서는 인덱스 3을 넣어야 함.
                 // * DATA ADDED (ms) 값
                 Long value_3 = cursor.getLong(3);
-
-
-
-
-                Log.d("저장된 날짜 ms : ", String.valueOf(value_3)); // ms 단위임
-
+                //Log.d("저장된 날짜 ms : ", String.valueOf(value_3)); // ms 단위임
+                // ms 단위 변환
                 Calendar calendar = Calendar.getInstance(); //캘린더 클래스 인스턴스 만들고
                 calendar.setTimeInMillis(value_3); // ms단위의 저장된 날짜를 세팅하고
                 Date date = calendar.getTime(); // 포매팅 하기 위해서
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+                SimpleDateFormat year = new SimpleDateFormat("yyyy");
+                SimpleDateFormat month = new SimpleDateFormat("MM");
+
 
                 //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
 
@@ -245,11 +248,13 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 // <--millisecond는 "sss"가 아니라 "SSS"로 해야 정확하게 보존된다.
                 //Date timeInDate = new Date(dateAdded);
                 String yearNmonth = simpleDateFormat.format(date);
-                Log.d("저장된 월 : ", yearNmonth); // 월
+                String yearS = year.format(date);
+                String monthS = month.format(date);
 
 
-
-
+                Log.d("저장된 년+월 : ", yearNmonth); // 년+월
+                Log.d("저장된 년 : ", yearS); // 년
+                Log.d("저장된 월 : ", monthS); // 월
 
 
                 try {
@@ -268,9 +273,10 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 count+=1;
+                Log.d("count : " ,String.valueOf(count));
                 if (count>=30){break;}
 
-            } while (cursor.moveToNext());
+            } while (cursor.moveToPrevious());
         }
 
         return mdataList;
