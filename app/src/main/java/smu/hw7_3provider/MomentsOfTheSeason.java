@@ -71,8 +71,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             Log.d("봄 선택됨", "0000000000000000000000000000");
            // dataList = GetSeasonMomentImage();
            // dataList = getDataList();
-
-            dataList = readImageInMyGallery(3, 5);
+            // 3월~ 5월일 때
+            dataList = readImageInMyGallery(3, 5); // 이건 커서 맨 앞에서 시작
 
 
         }else if(whatSeason.equals("summer")){
@@ -107,49 +107,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
     }
-    ///아놔
-    /*
-     MediaStore.Images.Media.DATE_ADDED,
-                MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.MIME_TYPE,
-                MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media._ID
-    * */
 
-    public ArrayList<Moment> getDataList() {
-        ArrayList<Moment> mdataList = new ArrayList<>();
-        String[] imageSet = new String[]{
-
-                MediaStore.Images.Media.DATE_ADDED,
-                MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media._ID
-        };
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
-            return null;
-        }
-        final String orderBy = MediaStore.Images.Media.DATE_ADDED;
-        Cursor cursor = getApplicationContext().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-                imageSet, null, null, null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()){
-            Moment moment = new Moment();
-            int dataAdded = cursor.getInt(0); //DATA_ADDED
-            moment.setDataAdded(dataAdded);
-            Log.d("이건 dataAdded", String.valueOf(dataAdded));
-            String data = cursor.getString(1); //DATA
-            moment.setData(data);
-            Log.d("이건 data", String.valueOf(data));
-            long data_id = cursor.getLong(2); // _ID
-            moment.setData_id(data_id);
-            Log.d("이건 data_id", String.valueOf(data_id));
-            mdataList.add(moment);
-        }
-
-        cursor.close();
-
-        return mdataList;
-    }
     // 내부저장소 vs 외부 저장소
     // https://hellose7.tistory.com/96
     // 정신건강에 좋은 파일 공유하기
@@ -164,6 +122,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     // 미디어 db table column정보
     // https://aroundck.tistory.com/190
     // https://choidev-1.tistory.com/74 참고 주소
+
     private ArrayList<Moment> readImageInMyGallery(int minMonth, int maxMonth) {
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
@@ -180,16 +139,16 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
 
-       // String selection = MediaStore.Images.Media.DATE_ADDED + ">=5108213426";
+        // String selection = MediaStore.Images.Media.DATE_ADDED + ">=5108213426";
         //// 여기에서 select문 넣어서 애초에 처음부터 minMonth ~ maxMonth 사이의 월에 해당하는 것만 가져오기
         // 이걸 했는데도 데이터 처리에 너무 많은 시간이 쓰여서 죽는다면? => 뭔가 이미지 표시도 하고 이미지에 대한 정보도
         // 위의 칼럼에서 가져온 것들 싹다 표시해줘야 할 것 같은....
         // 계절은 못하는...
-        final String orderBy = MediaStore.Images.Media.DATE_ADDED +" DESC ";
+        final String orderBy = MediaStore.Images.Media.DATE_ADDED +" DESC";
 
         Cursor cursor = getContentResolver().query(internalUri, projection, null, null, orderBy);
         //Cursor
-        cursor.moveToLast();
+        cursor.moveToFirst();
         if (cursor==null|| !cursor.moveToFirst()){
             // 인터널이 널이면 외부로 바꿔주기
             cursor = getContentResolver().query(externalUri, projection, null, null, orderBy);
@@ -276,52 +235,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 Log.d("count : " ,String.valueOf(count));
                 if (count>=30){break;}
 
-            } while (cursor.moveToPrevious());
+            } while (cursor.moveToNext());
         }
 
         return mdataList;
     }
-/*
-    // 우리 갤러리에서 필요한 것들 칼럼 통해서 가져오기
-    public ArrayList<Moment> GetSeasonMomentImage() {
-        ArrayList<Moment> pDataList = new ArrayList<>();
-
-        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        // 우리가 원하는 데이터 셋을 project에 만들어서 넣어줌
-        String[] projection = new String[]{
-                // ADDED 저장된날 / TAKEN 촬영 날짜 s단위
-
-                MediaStore.Images.Media.DATE_ADDED,
-               // MediaStore.Images.Media.DATE_TAKEN,
-              //  MediaStore.Images.Media.DISPLAY_NAME,
-               // MediaStore.Images.Media.MIME_TYPE,
-                MediaStore.Images.Media.DATA,
-              //  MediaStore.Images.Media._ID
-
-        };
-        //String selection = MediaStore.Images.Media.MIME_TYPE + "='image/jpeg'";
-        // uri를 가져올거임 위의 데이터셋에 해당하는 것들에서 추가된 순서로
-        Cursor cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, MediaStore.Images.Media.DATE_ADDED);
-
-
-        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        int columnUri = cursor.getColumnIndexOrThrow(String.valueOf(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
-        int columnDateAdded = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
-
-        cursor.moveToFirst(); // 처음으로 이동
-        do {
-            String absolutePath = cursor.getString(columnIndex);
-            int imagePath = Integer.parseInt(cursor.getString(columnUri));
-            Log.d(TAG, String.valueOf(columnDateAdded));
-            Moment pData = new Moment();
-            pData.setPath(absolutePath);
-            pData.setImage_path(imagePath);
-            pDataList.add(pData);
-        }
-        while (cursor.moveToNext());
-
-        return pDataList;
-    }
-
-*/
 }
