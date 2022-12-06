@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Android/AndroidProject/2022-2/HW7-3Provider/app/src/main/res/layout/activity_beautiful_moment.xml" value="0.19519927536231885" />
         <entry key="..\:/Android/AndroidProject/2022-2/HW7-3Provider/app/src/main/res/layout/item_view.xml" value="0.19519927536231885" />
+        <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.117" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/drawable-v24/polaroid.xml" value="0.2755" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/drawable-v24/resize_fall.xml" value="0.1665" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/drawable-v24/resize_polaroid.xml" value="0.2755" />
@@ -13,7 +14,7 @@
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/layout/activity_beautiful_moment.xml" value="0.33" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/layout/activity_moments_of_the_season.xml" value="0.12222222222222222" />
+        <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/layout/activity_moments_of_the_season.xml" value="0.22" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/layout/activity_select_season.xml" value="0.25" />
         <entry key="..\:/Android/StudioProjects/HW7-3Provider/app/src/main/res/layout/item_view.xml" value="0.14130434782608695" />
       </map>

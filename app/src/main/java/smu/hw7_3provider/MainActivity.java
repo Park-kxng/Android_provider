@@ -5,9 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,11 +19,28 @@ import java.util.ArrayList;
 
 // 2022년 갤러리 연말정산 메인 화면
 public class MainActivity extends AppCompatActivity {
-    Button buttonSelectSeason;
+    Button buttonSelectSeason, buttonMusicStart;
+    MusicService mService;
+    ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mService = ((MusicService.MusicServiceBinder)service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mService = null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent service = new Intent(MainActivity.this, MusicService.class);
+        startService(service);
+        bindService(service, conn, BIND_AUTO_CREATE);
 
 
         // 위험 권한 요청
@@ -42,10 +62,13 @@ public class MainActivity extends AppCompatActivity {
         buttonSelectSeason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mService.play();
                 Intent intent = new Intent(getApplicationContext(), SelectSeason.class);
                 startActivity(intent);
             }
         });
+
 
 
     }

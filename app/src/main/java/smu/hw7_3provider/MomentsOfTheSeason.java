@@ -21,7 +21,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import java.text.ParseException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +51,8 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         title = findViewById(R.id.momentsTitle);
         icon = findViewById(R.id.seasonIcon);
         layout = findViewById(R.id.layout);
+        recyclerView = findViewById(R.id.recyclerView);
+
 
         Log.d("봄 선택됨", "0000000000000000000000000000");
         //Intent로 어떤 계절을 볼건지 가져옴
@@ -73,7 +75,13 @@ public class MomentsOfTheSeason extends AppCompatActivity {
            // dataList = GetSeasonMomentImage();
            // dataList = getDataList();
             // 3월~ 5월일 때
-            dataList = readImageInMyGallery(3, 5); // 이건 커서 맨 앞에서 시작
+            try {
+                dataList = readImageInMyGallery(1); // 이건 커서 맨 앞에서 시작
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            recyclerView.setBackgroundColor(Color.rgb(207, 255, 209));
+
 
 
         }else if(whatSeason.equals("summer")){
@@ -81,21 +89,41 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             title.setText("여름날의 순간들");
             icon.setImageResource(R.drawable.resize_summer);
             layout.setBackgroundColor(Color.rgb(255, 210, 5));
+            try {
+                dataList = readImageInMyGallery(2); // 이건 커서 맨 앞에서 시작
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            recyclerView.setBackgroundColor(Color.rgb(255, 232, 162));
+
 
         }else if(whatSeason.equals("fall")){
             // 화면 스타일 변경
             title.setText("가을의 순간들");
             icon.setImageResource(R.drawable.resize_fall);
             layout.setBackgroundColor(Color.rgb(241, 116, 34));
+            try {
+                dataList = readImageInMyGallery(3); // 이건 커서 맨 앞에서 시작
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            recyclerView.setBackgroundColor(Color.rgb(248, 191, 174));
+
 
         }else if(whatSeason.equals("winter")){
             // 화면 스타일 변경
             title.setText("겨울의 순간들");
             icon.setImageResource(R.drawable.resize_winter);
             layout.setBackgroundColor(Color.rgb(45, 170, 226));
+            try {
+                dataList = readImageInMyGallery(4); // 이건 커서 맨 앞에서 시작
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            recyclerView.setBackgroundColor(Color.rgb(184, 230, 255));
+
 
         }
-        recyclerView = findViewById(R.id.recyclerView);
         adapter = new MyRecyclerViewAdapter(this, dataList);
         recyclerView.setAdapter(adapter);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -124,11 +152,33 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     // https://aroundck.tistory.com/190
     // https://choidev-1.tistory.com/74 참고 주소
 
-    private ArrayList<Moment> readImageInMyGallery(int minMonth, int maxMonth) {
+    private ArrayList<Moment> readImageInMyGallery(int whatSeason) throws ParseException {
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
         Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
         Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; // sd카드 없는 근영이를 위한 internal --NOPE..
+        String minMonth="", maxMonth="";
+
+        switch (whatSeason){
+            case 1:
+                minMonth = "2022-03";
+                maxMonth = "2022-06";
+                break;
+            case 2:
+                minMonth = "2022-06";
+                maxMonth = "2022-09";
+                break;
+
+            case 3:
+                minMonth = "2022-09";
+                maxMonth = "2022-012";
+                break;
+
+            case 4:
+                minMonth = "2022-12";
+                maxMonth = "2023-01";
+                break;
+        }
 
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
@@ -199,18 +249,16 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 Long value_3 = cursor.getLong(3);
                Log.d("ms시간 - modified: ", String.valueOf(value_3));
                // 시간 결정 가능
-               if (value_3 <=20221101){
-                   //5월만 출력하고 나머지 넘김
-                   continue;
-               }
+
                 //Log.d("저장된 날짜 ms : ", String.valueOf(value_3)); // ms 단위임
                 // ms 단위 변환
                 Calendar calendar = Calendar.getInstance(); //캘린더 클래스 인스턴스 만들고
                 calendar.setTimeInMillis(value_3); // ms단위의 저장된 날짜를 세팅하고
                 Date date = calendar.getTime(); // 포매팅 하기 위해서
+
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
-                SimpleDateFormat year = new SimpleDateFormat("yyyy");
-                SimpleDateFormat month = new SimpleDateFormat("MM");
+                Date test = new Date(value_3);
+
 
 
                 //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM");
@@ -219,33 +267,55 @@ public class MomentsOfTheSeason extends AppCompatActivity {
                 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
                 // <--millisecond는 "sss"가 아니라 "SSS"로 해야 정확하게 보존된다.
                 //Date timeInDate = new Date(dateAdded);
+
+
                 String yearNmonth = simpleDateFormat.format(date);
-                String yearS = year.format(date);
-                String monthS = month.format(date);
+                Date date_yearNmonth = simpleDateFormat.parse(yearNmonth);
+
+                Date date_standard = simpleDateFormat.parse(minMonth);
+                Date date_standard2 = simpleDateFormat.parse(maxMonth);
 
 
-                Log.d("저장된 년+월 : ", yearNmonth); // 년+월
-                Log.d("저장된 년 : ", yearS); // 년
-                Log.d("저장된 월 : ", monthS); // 월
+
+                //String yearS = year.format(date);
+                //String monthS = month.format(date);
 
 
-                try {
-                    InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
-                    // bitmap 만드는 법 https://developer88.tistory.com/499
-                    if(is != null){
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        Moment moment = new Moment();
-                        moment.setBitmapImage(bitmap);
-                        mdataList.add(moment);
-                        is.close();
+
+
+
+                Log.d("저장된 년+월 : ",yearNmonth); // 년+월
+                Log.d("기준 날짜 : ", String.valueOf(date_standard)); // 년+월
+                Log.d("test 날짜 : ", String.valueOf(test)); // 년+월
+
+
+                // Log.d("저장된 년 : ",yearS); // 년
+                //Log.d("저장된 월 ",monthS); // 월
+                if (test.after(date_standard) && test.before(date_standard2)){
+                    Log.d("hello", "-------------------------------" );
+                    try {
+                        InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+                        // bitmap 만드는 법 https://developer88.tistory.com/499
+                        if(is != null){
+                            Bitmap bitmap = BitmapFactory.decodeStream(is);
+                            Moment moment = new Moment();
+                            moment.setBitmapImage(bitmap);
+                            mdataList.add(moment);
+                            is.close();
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    count+=1;
+                    Log.d("count : " ,String.valueOf(count));
+
                 }
-                count+=1;
-                Log.d("count : " ,String.valueOf(count));
+                else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
+
+
+
                 if (count>=10){break;}
 
             } while (cursor.moveToNext());
