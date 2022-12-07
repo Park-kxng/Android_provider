@@ -153,6 +153,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     // https://choidev-1.tistory.com/74 참고 주소
 
     private ArrayList<Moment> readImageInMyGallery(int whatSeason) throws ParseException {
+
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
         Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
@@ -171,12 +172,14 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
             case 3:
                 minMonth = "2022-09";
-                maxMonth = "2022-012";
+                maxMonth = "2022-12";
                 break;
 
             case 4:
-                minMonth = "2022-12";
-                maxMonth = "2023-01";
+                //minMonth = "2022-12";
+                minMonth = "2022-01";
+                //maxMonth = "2023-01";
+                maxMonth = "2023-03";
                 break;
         }
 
