@@ -1,5 +1,10 @@
 package smu.hw7_3provider;
 
+import static smu.hw7_3provider.MainActivity.fallDataList;
+import static smu.hw7_3provider.MainActivity.springDataList;
+import static smu.hw7_3provider.MainActivity.summerDataList;
+import static smu.hw7_3provider.MainActivity.winterDataList;
+
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -40,7 +45,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     ImageView icon;
     LinearLayout layout;
 
-
+    public static  String whatSeason = "spring";
     private String TAG = "저장 날짜들";
 
     @SuppressLint("ResourceAsColor")
@@ -57,7 +62,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         Log.d("봄 선택됨", "0000000000000000000000000000");
         //Intent로 어떤 계절을 볼건지 가져옴
         Intent intent =getIntent();
-        String whatSeason = intent.getStringExtra("whatSeason");
+        whatSeason = intent.getStringExtra("whatSeason");
 
 
 
@@ -72,16 +77,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             layout.setBackgroundColor(Color.rgb(71, 183, 73));
 
             Log.d("봄 선택됨", "0000000000000000000000000000");
-           // dataList = GetSeasonMomentImage();
-           // dataList = getDataList();
-            // 3월~ 5월일 때
-            try {
-                dataList = readImageInMyGallery(1); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            recyclerView.setBackgroundColor(Color.rgb(207, 255, 209));
 
+            recyclerView.setBackgroundColor(Color.rgb(207, 255, 209));
+            adapter = new MyRecyclerViewAdapter(this, springDataList);
 
 
         }else if(whatSeason.equals("summer")){
@@ -89,42 +87,30 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             title.setText("여름날의 순간들");
             icon.setImageResource(R.drawable.resize_summer);
             layout.setBackgroundColor(Color.rgb(255, 210, 5));
-            try {
-                dataList = readImageInMyGallery(2); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            recyclerView.setBackgroundColor(Color.rgb(255, 232, 162));
 
+            recyclerView.setBackgroundColor(Color.rgb(255, 232, 162));
+            adapter = new MyRecyclerViewAdapter(this, summerDataList);
 
         }else if(whatSeason.equals("fall")){
             // 화면 스타일 변경
             title.setText("가을의 순간들");
             icon.setImageResource(R.drawable.resize_fall);
             layout.setBackgroundColor(Color.rgb(241, 116, 34));
-            try {
-                dataList = readImageInMyGallery(3); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            recyclerView.setBackgroundColor(Color.rgb(248, 191, 174));
 
+            recyclerView.setBackgroundColor(Color.rgb(248, 191, 174));
+            adapter = new MyRecyclerViewAdapter(this, fallDataList);
 
         }else if(whatSeason.equals("winter")){
             // 화면 스타일 변경
             title.setText("겨울의 순간들");
             icon.setImageResource(R.drawable.resize_winter);
             layout.setBackgroundColor(Color.rgb(45, 170, 226));
-            try {
-                dataList = readImageInMyGallery(4); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            recyclerView.setBackgroundColor(Color.rgb(184, 230, 255));
 
+            recyclerView.setBackgroundColor(Color.rgb(184, 230, 255));
+            adapter = new MyRecyclerViewAdapter(this, winterDataList);
 
         }
-        adapter = new MyRecyclerViewAdapter(this, dataList);
+        //adapter = new MyRecyclerViewAdapter(this, dataList);
         recyclerView.setAdapter(adapter);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         // 리사이클러 뷰를 격자 모양으로 보여줌
@@ -152,7 +138,10 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     // https://aroundck.tistory.com/190
     // https://choidev-1.tistory.com/74 참고 주소
 
+    //메인으로 이전
+    /*
     private ArrayList<Moment> readImageInMyGallery(int whatSeason) throws ParseException {
+
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
         Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; //sd카드 있는 사람은 이거 외부 저장소 가능
@@ -171,12 +160,14 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
             case 3:
                 minMonth = "2022-09";
-                maxMonth = "2022-012";
+                maxMonth = "2022-12";
                 break;
 
             case 4:
-                minMonth = "2022-12";
-                maxMonth = "2023-01";
+                //minMonth = "2022-12";
+                minMonth = "2022-01";
+                //maxMonth = "2023-01";
+                maxMonth = "2023-03";
                 break;
         }
 
@@ -291,36 +282,67 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
                 // Log.d("저장된 년 : ",yearS); // 년
                 //Log.d("저장된 월 ",monthS); // 월
-                if (test.after(date_standard) && test.before(date_standard2)){
-                    Log.d("hello", "-------------------------------" );
-                    try {
-                        InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
-                        // bitmap 만드는 법 https://developer88.tistory.com/499
-                        if(is != null){
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
-                            Moment moment = new Moment();
-                            moment.setBitmapImage(bitmap);
-                            mdataList.add(moment);
-                            is.close();
+                // 겨울인 경우
+                if (whatSeason == 4){
+                    if (test.after(date_standard)){
+                        Log.d("hello", "-------------------------------" );
+                        try {
+                            InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+                            // bitmap 만드는 법 https://developer88.tistory.com/499
+                            if(is != null){
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                Moment moment = new Moment();
+                                moment.setBitmapImage(bitmap);
+                                mdataList.add(moment);
+                                is.close();
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        count+=1;
+                        Log.d("count : " ,String.valueOf(count));
+
                     }
-                    count+=1;
-                    Log.d("count : " ,String.valueOf(count));
+                    else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
 
                 }
-                else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
+                else{
+                    //겨울이 아닌 경우
+                    if (test.after(date_standard) && test.before(date_standard2)){
+                        Log.d("hello", "-------------------------------" );
+                        try {
+                            InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+                            // bitmap 만드는 법 https://developer88.tistory.com/499
+                            if(is != null){
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                Moment moment = new Moment();
+                                moment.setBitmapImage(bitmap);
+                                mdataList.add(moment);
+                                is.close();
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        count+=1;
+                        Log.d("count : " ,String.valueOf(count));
+
+                    }
+                    else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
+                }
 
 
 
-                if (count>=10){break;}
+
+                if (count>=5){break;}
 
             } while (cursor.moveToNext());
         }
 
         return mdataList;
     }
+    */
 }
