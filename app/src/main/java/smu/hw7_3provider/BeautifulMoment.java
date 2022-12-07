@@ -27,7 +27,6 @@ import android.widget.ImageView;
 public class BeautifulMoment extends AppCompatActivity {
 
     ImageView imageViewClickPosition;
-    Button btn_musicStop;
     ImageView imageViewAnimation;
     Animation anim_falling;
 
@@ -36,15 +35,16 @@ public class BeautifulMoment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beautiful_moment);
 
-        // momentsOfTheSeason 에서 넘긴 Intent 값 받아오기
+        // momentsOfTheSeason 에서 넘긴 Intent 값 받아오기 clickPosition 어떤 사진을 클릭했는지
         Intent intent =getIntent();
         int clickPosition = intent.getIntExtra("clickPosition", 0);
-        // 선택한 이미지를 폴라로이드 안에 넣기
+        // 이미지뷰 객체 만들고
         imageViewClickPosition = findViewById(R.id.imageViewClickPosition);
         imageViewAnimation = findViewById(R.id.imageViewAnimation);
+        // 떨어지는 애니메이션
         anim_falling = AnimationUtils.loadAnimation(this, R.anim.falling_animation);
-
-        // 지금 보고 있는 계절의 아름다운 순간들 가져와서 보여주기
+        
+        // 선택한 이미지를 폴라로이드 안에 넣어 지금 보고 있는 계절의 아름다운 순간들 가져와서 보여주기 + 애니메이션
         if (whatSeason.equals("spring")){
             imageViewClickPosition.setImageBitmap(springDataList.get(clickPosition).getBitmapImage());
             imageViewAnimation.setImageResource(R.drawable.spring_flower2);

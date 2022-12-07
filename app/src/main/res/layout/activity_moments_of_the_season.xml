@@ -30,7 +30,17 @@
             android:fontFamily="@font/cafe24bold"
             android:text="봄날의 순간들"
             android:textSize="34sp" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#323232"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="계절의 순간(사진)을 클릭해보세요!" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

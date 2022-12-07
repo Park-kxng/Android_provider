@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
+
 // 배경음악 재생을 위한 MusicService class
 public class MusicService extends Service {
 
@@ -47,6 +48,7 @@ public class MusicService extends Service {
         Toast.makeText(getApplicationContext(), "사운드 재생", Toast.LENGTH_SHORT).show();
         mp.start();
     }
+
     public void pause(){
         Toast.makeText(getApplicationContext(), "사운드 일시정지지", Toast.LENGTH_SHORT).show();
         mp.pause();
