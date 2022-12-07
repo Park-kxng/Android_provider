@@ -131,7 +131,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
         //불규칙 레이아웃
         StaggeredGridLayoutManager staggeredGridLayoutManager
-                = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         //레이아웃 매니저 연결
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
@@ -349,7 +349,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
 
 
-                if (count>=10){break;}
+                if (count>=5){break;}
 
             } while (cursor.moveToNext());
         }
