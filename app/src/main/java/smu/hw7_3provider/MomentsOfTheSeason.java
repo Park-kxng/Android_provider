@@ -45,7 +45,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     ImageView icon;
     LinearLayout layout;
 
-
+    public static  String whatSeason = "spring";
     private String TAG = "저장 날짜들";
 
     @SuppressLint("ResourceAsColor")
@@ -62,7 +62,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         Log.d("봄 선택됨", "0000000000000000000000000000");
         //Intent로 어떤 계절을 볼건지 가져옴
         Intent intent =getIntent();
-        String whatSeason = intent.getStringExtra("whatSeason");
+        whatSeason = intent.getStringExtra("whatSeason");
 
 
 
@@ -77,17 +77,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             layout.setBackgroundColor(Color.rgb(71, 183, 73));
 
             Log.d("봄 선택됨", "0000000000000000000000000000");
-           // dataList = GetSeasonMomentImage();
-           // dataList = getDataList();
-            // 3월~ 5월일 때
-            /*
-            try {
-                dataList = readImageInMyGallery(1); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-             */
             recyclerView.setBackgroundColor(Color.rgb(207, 255, 209));
             adapter = new MyRecyclerViewAdapter(this, springDataList);
 
@@ -97,12 +87,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             title.setText("여름날의 순간들");
             icon.setImageResource(R.drawable.resize_summer);
             layout.setBackgroundColor(Color.rgb(255, 210, 5));
-            /*
-            try {
-                dataList = readImageInMyGallery(2); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
+
             recyclerView.setBackgroundColor(Color.rgb(255, 232, 162));
             adapter = new MyRecyclerViewAdapter(this, summerDataList);
 
@@ -111,12 +96,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             title.setText("가을의 순간들");
             icon.setImageResource(R.drawable.resize_fall);
             layout.setBackgroundColor(Color.rgb(241, 116, 34));
-            /*
-            try {
-                dataList = readImageInMyGallery(3); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
+
             recyclerView.setBackgroundColor(Color.rgb(248, 191, 174));
             adapter = new MyRecyclerViewAdapter(this, fallDataList);
 
@@ -125,14 +105,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
             title.setText("겨울의 순간들");
             icon.setImageResource(R.drawable.resize_winter);
             layout.setBackgroundColor(Color.rgb(45, 170, 226));
-            /*
-            try {
-                dataList = readImageInMyGallery(4); // 이건 커서 맨 앞에서 시작
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
-             */
             recyclerView.setBackgroundColor(Color.rgb(184, 230, 255));
             adapter = new MyRecyclerViewAdapter(this, winterDataList);
 
@@ -144,7 +117,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
         //불규칙 레이아웃
         StaggeredGridLayoutManager staggeredGridLayoutManager
-                = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         //레이아웃 매니저 연결
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
