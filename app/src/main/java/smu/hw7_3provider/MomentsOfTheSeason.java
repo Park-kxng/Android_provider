@@ -10,15 +10,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 // 선택된 계절에 찍은 이미지들 보여줄 부분
 public class MomentsOfTheSeason extends AppCompatActivity {
+
     RecyclerView recyclerView;
     MyRecyclerViewAdapter adapter;
     public static ArrayList<Moment> dataList;
@@ -34,6 +51,9 @@ public class MomentsOfTheSeason extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments_of_the_season);
+
+
+
         title = findViewById(R.id.momentsTitle);
         icon = findViewById(R.id.seasonIcon);
         layout = findViewById(R.id.layout);
@@ -80,23 +100,7 @@ public class MomentsOfTheSeason extends AppCompatActivity {
         //레이아웃 매니저 연결
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
+
     }
-
-    // 리사이클러 뷰를 격자 모양으로 보여줌
-    // https://black-jin0427.tistory.com/101 링크 참고해서 마저 구현하기
-    // 내부저장소 vs 외부 저장소
-    // https://hellose7.tistory.com/96
-    // 정신건강에 좋은 파일 공유하기
-    //https://crystalcube.co.kr/category/Android
-    // 외부 저장소에서 mp3 가져와 재생
-    // https://developer88.tistory.com/192
-    // 컨텐트 프로바이더
-    // https://50billion-dollars.tistory.com/entry/Android-%EC%BD%98%ED%85%90%ED%8A%B8-%ED%94%84%EB%A1%9C%EB%B0%94%EC%9D%B4%EB%8D%94
-
-    //mp3
-    // https://ddolcat.tistory.com/622
-    // 미디어 db table column정보
-    // https://aroundck.tistory.com/190
-    // https://choidev-1.tistory.com/74 참고 주소
 
 }
