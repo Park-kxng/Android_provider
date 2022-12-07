@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 // 2022년 갤러리 연말정산 메인 화면
 public class MainActivity extends AppCompatActivity {
-    Button buttonSelectSeason, buttonMusicStart;
+    Button buttonSelectSeason;
     MusicService mService;
     ServiceConnection conn = new ServiceConnection() {
         @Override
@@ -57,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions(permissions); // 권한 허용할 것인지 물어보는 것 부분 함수
 
 
-
+        // 버튼 클릭 시 음악 재생, 화면 전환
         buttonSelectSeason = findViewById(R.id.buttonSelectSeason);
         buttonSelectSeason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // 음악 재생
                 mService.play();
+                // 화면 전환
                 Intent intent = new Intent(getApplicationContext(), SelectSeason.class);
                 startActivity(intent);
             }

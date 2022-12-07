@@ -6,7 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
-
+// 배경음악 재생을 위한 MusicService class
 public class MusicService extends Service {
 
     IBinder binder = new MusicServiceBinder();
@@ -30,11 +30,6 @@ public class MusicService extends Service {
     }
 
     @Override
-    /*
-    public void onStart(Intent intent, int startId){
-        super.onStart(intent,startId);
-        Toast.makeText(getApplicationContext(), "서비스연결", Toast.LENGTH_SHORT).show();
-    }*/
     public int onStartCommand(Intent intent, int flags, int startId){
         super.onStartCommand(intent, flags, startId);
         Toast.makeText(getApplicationContext(), "서비스 연결", Toast.LENGTH_SHORT).show();

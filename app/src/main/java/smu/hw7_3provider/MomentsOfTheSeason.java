@@ -294,28 +294,58 @@ public class MomentsOfTheSeason extends AppCompatActivity {
 
                 // Log.d("저장된 년 : ",yearS); // 년
                 //Log.d("저장된 월 ",monthS); // 월
-                if (test.after(date_standard) && test.before(date_standard2)){
-                    Log.d("hello", "-------------------------------" );
-                    try {
-                        InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
-                        // bitmap 만드는 법 https://developer88.tistory.com/499
-                        if(is != null){
-                            Bitmap bitmap = BitmapFactory.decodeStream(is);
-                            Moment moment = new Moment();
-                            moment.setBitmapImage(bitmap);
-                            mdataList.add(moment);
-                            is.close();
+                // 겨울인 경우
+                if (whatSeason == 4){
+                    if (test.after(date_standard)){
+                        Log.d("hello", "-------------------------------" );
+                        try {
+                            InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+                            // bitmap 만드는 법 https://developer88.tistory.com/499
+                            if(is != null){
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                Moment moment = new Moment();
+                                moment.setBitmapImage(bitmap);
+                                mdataList.add(moment);
+                                is.close();
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        count+=1;
+                        Log.d("count : " ,String.valueOf(count));
+
                     }
-                    count+=1;
-                    Log.d("count : " ,String.valueOf(count));
+                    else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
 
                 }
-                else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
+                else{
+                    //겨울이 아닌 경우
+                    if (test.after(date_standard) && test.before(date_standard2)){
+                        Log.d("hello", "-------------------------------" );
+                        try {
+                            InputStream is = getContentResolver().openInputStream(Uri.parse(contentUrl));
+                            // bitmap 만드는 법 https://developer88.tistory.com/499
+                            if(is != null){
+                                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                                Moment moment = new Moment();
+                                moment.setBitmapImage(bitmap);
+                                mdataList.add(moment);
+                                is.close();
+                            }
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        count+=1;
+                        Log.d("count : " ,String.valueOf(count));
+
+                    }
+                    else{Log.d("아니지!", " 빠르면 처리 안합니다.--------"); }
+                }
+
 
 
 
