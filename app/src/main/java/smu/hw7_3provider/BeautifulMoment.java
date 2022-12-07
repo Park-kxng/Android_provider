@@ -4,23 +4,14 @@ import static smu.hw7_3provider.MainActivity.fallDataList;
 import static smu.hw7_3provider.MainActivity.springDataList;
 import static smu.hw7_3provider.MainActivity.summerDataList;
 import static smu.hw7_3provider.MainActivity.winterDataList;
-import static smu.hw7_3provider.MomentsOfTheSeason.dataList;
 import static smu.hw7_3provider.MomentsOfTheSeason.whatSeason;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 
 // 이미지 클릭하면 보여줄 부분

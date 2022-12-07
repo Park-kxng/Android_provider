@@ -36,9 +36,8 @@ public class SelectSeason extends AppCompatActivity {
     ProgressDialog progressDialog;
     private Handler handler = new Handler();
     final private int PROGRESS_DIALOG = 0;
-
-
     Button buttonSpring, buttonSummer, buttonFall, buttonWinter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +138,7 @@ public class SelectSeason extends AppCompatActivity {
         ArrayList<Moment> mdataList = new ArrayList<>();
         boolean externalFlag = false;
         Uri externalUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; // 외부 저장소
-        Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; //sd카드 없는 경우를 대비함
+        Uri internalUri = MediaStore.Images.Media.INTERNAL_CONTENT_URI; //sd카드 같은 외부 저장소 없는 경우를 대비함
 
         // 각 계절이 2022년 몇월에 해당하는지 담겨져 있는 R.array.계절 배열에서 문자열을 가져와 넣음
         String title_month[] = new String[3];
@@ -161,7 +160,8 @@ public class SelectSeason extends AppCompatActivity {
         }
 
         // 우리가 가져올 칼럼들
-        // 이미지 가져올 때 필요한 레코드의 id인 _ID, 촬영날짜 s단위 DATE_TAKEN, 데이터 스트림, 파일 경로 DATA, 제목 TITLE 제목이 핵심
+        // 이미지 가져올 때 필요한 레코드의 id인 _ID, 촬영날짜 s단위 DATE_TAKEN,
+        // 데이터 스트림, 파일 경로 DATA, 제목 TITLE 제목이 핵심
         String[] projection = new String[]{
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATE_TAKEN,
@@ -184,7 +184,6 @@ public class SelectSeason extends AppCompatActivity {
 
 
         cursor.moveToFirst();
-
         if (cursor == null || !cursor.moveToFirst()) {
             // 이랬는데도 없으면 기본 이미지 띄워주기
             Log.e("TAG", "cursor null or cursor is empty -- NO IMAGE 이미지가 없어요!");
@@ -210,26 +209,23 @@ public class SelectSeason extends AppCompatActivity {
                 if (externalFlag){
                     contentUrl = externalUri.toString() + "/" + cursor.getString(0);
                     // o에 해당하는 것 ID
-                    Log.d("어느 저장소?: ", "외부 저장소다!!!!!!!!");
-                    Log.d("externalUri.toString()-----: ", externalUri.toString());
-                    Log.d("cursor.getString(0)-----: ", cursor.getString(0));
-                    Log.d("URI어떻게?: ", contentUrl);
+                    //Log.d("어느 저장소?: ", "외부 저장소다!!!!!!!!");
+                    //Log.d("externalUri.toString()-----: ", externalUri.toString());
+                    //Log.d("cursor.getString(0)-----: ", cursor.getString(0));
+                   // Log.d("URI어떻게?: ", contentUrl);
                 }else{
                     contentUrl = internalUri.toString() + "/" + cursor.getString(0);
-                    Log.d("어느 저장소?: ", "내부 저장소다!!!!!!!!");
-                    Log.d("externalUri.toString()-----: ", externalUri.toString());
-                    Log.d("cursor.getString(0)-----: ", cursor.getString(0));
-                    Log.d("URI어떻게?: ", contentUrl);
+                   // Log.d("어느 저장소?: ", "내부 저장소다!!!!!!!!");
+                    //Log.d("externalUri.toString()-----: ", externalUri.toString());
+                   // Log.d("cursor.getString(0)-----: ", cursor.getString(0));
+                   // Log.d("URI어떻게?: ", contentUrl);
                 }
 
                 // MediaStore.Images.Media.DISPLAY_NAME은 20220905_095513.jpg 이렇게 표시됨
                 String title = String.valueOf(cursor.getString(3));  // 타이틀 20220905_095513 이렇게 표시됨
                 //Log.d("(MediaStore.Images.Media.TITLE ? : ", title);//20220905_095513
 
-                // 처음에는 이미지가 저장된 때를 가져와서 계절별로 보여주려고 했음.
-                // 그렇게 하게 되면 스크린 샷도 함께 나오게 됨 그리고 저장된 때가 1970년으로 설정되어 이미지들도 꽤 있었음
-
-                // 그러나 사진에 관련된 칼럼들의 데이터를 찍어보면서 사진으로 촬영한 것은 보통 날짜로 저장된다는 것을 확인할 수 있었음
+                // 사진에 관련된 칼럼들의 데이터를 찍어보면서 사진으로 촬영한 것은 보통 날짜로 저장된다는 것을 확인할 수 있었음
                 // 그래서 해당 칼럼을 찾았고, DISPLAY_NAME과 TITLE이 이에 해당됨. DISPLAY_NAME은 확장자까지 나와서 TITLE을 사용하기로 함
                 // TITLE에 해당 문자열이 있는지를 확인하여 언제 찍힌 것인지를 알 수 있고 Screenshot 문자열을 제외시켜 화면 캡쳐들은 넘길 수 있음
                 // title_month[]에는 strings.xml에서 가져온 각 계절별 날짜 문자열이 들어 있어서 그 문자열이 들어있는지 확인하는 부분임 ▼
