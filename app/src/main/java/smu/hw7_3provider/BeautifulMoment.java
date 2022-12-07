@@ -22,8 +22,11 @@ public class BeautifulMoment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beautiful_moment);
+
+        // momentsOfTheSeason 에서 넘긴 Intent 값 받아오기
         Intent intent =getIntent();
         int clickPosition = intent.getIntExtra("clickPosition", 0);
+        // 선택한 이미지를 폴라로이드 안에 넣기
         imageViewClickPosition = findViewById(R.id.imageViewClickPosition);
         imageViewClickPosition.setImageBitmap(dataList.get(clickPosition).getBitmapImage());}
 
